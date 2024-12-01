@@ -120,7 +120,7 @@ Ensure you have the following installed:
 
 3. **Start the Application**:
    ```bash
-   docker compose start
+   docker compose up -d
    ```
 
    - Fronend running on port 5173
