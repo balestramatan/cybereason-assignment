@@ -163,7 +163,6 @@ export class PokemonService {
       image: pokemon?.image || newPokemon?.image || '',
       isFavorite: userPokemon?.isFavorite || false,
       nickname: userPokemon?.nickname || null,
-      notes: userPokemon?.notes || [],
       extraDetails,
     };
 
@@ -240,7 +239,6 @@ export class PokemonService {
         image: data.sprites.front_default,
         isFavorite: false,
         nickname: null,
-        notes: null,
       };
 
       const dataToCache = {
@@ -295,7 +293,6 @@ export class PokemonService {
             image: details.sprites.front_default,
             isFavorite: false,
             nickname: null,
-            notes: null,
           };
         })
       );
@@ -376,34 +373,6 @@ export class PokemonService {
     }
   }
 
-  async updateNotes(userId: number, pokemonId: number, notes: string[]): Promise<void> {
-    // Check if exists in redis cache
-    const cacheKey = `pokemon_${pokemonId}`;
-    const cachedData = await this.redisService.get(cacheKey);
-
-    if (cachedData) {
-      // Update the cache
-      cachedData.notes = notes;
-      await this.redisService.set(cacheKey, cachedData, 3600);
-    }
-  
-    // Use upsert for updating or inserting notes
-    await this.userPokemonRepository.upsert(
-      {
-        user: { id: userId },
-        pokemon: { id: pokemonId },
-        notes,
-      },
-      { conflictPaths: ['user', 'pokemon'] } // Use the unique constraint fields
-    );
-  
-    // Invalidate all cache
-    const cachedKeys = await this.redisService.keys('pokemon_page_*');
-    for (const key of cachedKeys) {
-      await this.redisService.delete(key);
-    }
-  }
-
   async enrichWithUserPokemonData(pokemons: Pokemon[], userId: number): Promise<Pokemon[]> {
     const userPokemons = await this.userPokemonRepository.find({
       where: { user: { id: userId } },
@@ -417,7 +386,6 @@ export class PokemonService {
         ...pokemon,
         isFavorite: userPokemon?.isFavorite || false,
         nickname: userPokemon?.nickname || null,
-        notes: userPokemon?.notes || [],
       };
     });
   }

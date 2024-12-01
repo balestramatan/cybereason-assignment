@@ -45,18 +45,6 @@ export class PokemonController {
     await this.pokemonService.updateNickname(userId, pokemonId, nickname);
   }
 
-  @Patch(':id/notes')
-  async updateNotes(
-    @Param('id') pokemonId: number,
-    @Body('note') notes: string[],
-    @Request() req: any,
-  ): Promise<void> {
-    const userId = req.user.id;
-
-    console.log('notes', notes);
-    await this.pokemonService.updateNotes(userId, pokemonId, notes);
-  }
-
   @Delete(':id')
   async deletePokemon(@Param('id') id: number) {
     return this.pokemonService.delete(id);

@@ -36,7 +36,7 @@ input {
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    height: 60vh;
+    height: 54vh;
     width: 100%;
 }
 
@@ -62,7 +62,7 @@ input {
     padding: 10px;
     background-color: #f9f9f9;
     height: fit-content;
-    min-height: 220px;
+    min-height: 210px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
@@ -222,10 +222,44 @@ input {
   color: black;
 }
 
-.nickname-editor, .notes-editor {
+.nickname-editor {
     display: flex;
     flex-direction: column;
     margin: 20px;
     gap: 8px;
     transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+
+/* Responsive Styles */
+@media (max-width: 576px) {
+    .search-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modal-content {
+        max-height: 50%;
+        overflow: auto;
+    }
+
+    .details-container {
+        flex-direction: column;
+    }
 }

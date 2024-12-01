@@ -7,17 +7,14 @@ interface IProps {
   closeModal: () => void;
   onToggleFavorite: (pokemonId: number) => void;
   onAddNickname: (pokemonId: number, nickname: string) => void;
-  onAddNote: (pokemonId: number, notes: string) => void;
 }
 
 const PokemonDetails: React.FC<IProps> = (props: IProps) => {
-  const { pokemon, closeModal, onToggleFavorite, onAddNickname, onAddNote } = props;
+  const { pokemon, closeModal, onToggleFavorite, onAddNickname } = props;
 
   const [isEditingNickname, setIsEditingNickname] = useState(false);
-  const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [nickname, setNickname] = useState(pokemon.nickname || '');
   const [note, setNote] = useState('');
-  const [notes, setNotes] = useState(pokemon.notes?.join(', ') || '');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleToggleFavorite = () => onToggleFavorite(pokemon.id);
@@ -26,13 +23,6 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
     setIsLoading(true)
     onAddNickname(pokemon.id, nickname);
     setIsEditingNickname(false);
-    setIsLoading(false)
-  };
-
-  const handleSaveNotes = () => {
-    setIsLoading(true)
-    onAddNote(pokemon.id, note);
-    setIsEditingNotes(false);
     setIsLoading(false)
   };
 
@@ -48,9 +38,6 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
               {pokemon.isFavorite ? '💖 Remove From Favorites' : '🤍 Add To Favorites'} {/* Toggle Heart */}
             </button>
             <button onClick={() => setIsEditingNickname(!isEditingNickname)}>{`${pokemon?.nickname ? '📝 Update' : '📝 Add'} Nickname`}</button>
-            <button onClick={() => setIsEditingNotes(!isEditingNotes)}>
-              {`${pokemon?.notes?.length > 0 ? '📝 Update' : '📝 Add'} Notes`}
-            </button>
           </div>
 
           {/* Nickname Editor */}
@@ -66,22 +53,9 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
               </div>
           )}
 
-          {/* Notes Editor */}
-          {isEditingNotes && (
-              <div className="notes-editor">
-                <textarea
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                  placeholder="Enter notes (comma-separated)"
-                />
-                <button onClick={handleSaveNotes}>Save</button>
-              </div>
-          )}
-
           <div className='pokmon-details'>
             <h1>{pokemon.name} (#{pokemon.id})</h1>
             {pokemon.nickname && <span>{`@${pokemon?.nickname}`}</span>}
-            {pokemon.notes && <span>{`Notes: ${pokemon?.notes?.join(', ')}`}</span>}
             <img src={pokemon.image} alt={pokemon?.name} />
           </div>
           <div className='details-container'>

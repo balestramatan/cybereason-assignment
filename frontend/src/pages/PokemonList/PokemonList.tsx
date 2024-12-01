@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { fetchPokemonDetails, fetchPokemons, toggleFavorite, updateNickname, updateNote } from '../../api/pokemon';
+import { fetchPokemonDetails, fetchPokemons, toggleFavorite, updateNickname } from '../../api/pokemon';
 
 import './PokemonList.css';
 import PokemonDetails from './PokemonDetails';
@@ -115,16 +115,6 @@ const PokemonList: React.FC = () => {
     }
   };
 
-  const handleUpdateNote = (id: number, note: string) => {
-    try {
-      updateNote(id, note);
-      const newPokemon = {...selectedPokemon!, notes: [...selectedPokemon!.notes, note]};
-      setSelectedPokemon(newPokemon);
-    } catch (err: any) {
-      console.log(err.message || 'Failed to update notes');
-    }
-  }
-
   return (
     <div className='pokemon-list-container'>
       <h1>Pokémon List</h1>
@@ -164,7 +154,6 @@ const PokemonList: React.FC = () => {
           closeModal={closeModal} 
           onToggleFavorite={handleToggleFavorite} 
           onAddNickname={handleUpdateNickname} 
-          onAddNote={handleUpdateNote} 
         />
       )}
     </div>

@@ -1,0 +1,24 @@
+.header-container{
+    background-color: #f6bd03;
+    position: sticky;
+    top: 0;
+    z-index: 101;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+
+    span{
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    span.is-authenticated{
+        cursor: pointer;
+    }
+
+    img{
+        width: 150px;
+        height: 50px;
+
+    }
+}

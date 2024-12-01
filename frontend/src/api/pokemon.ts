@@ -43,11 +43,6 @@ export const toggleFavorite = async (pokemonId: number, isFavorite: boolean) => 
     return response.data;
 }
 
-export const updateNote = async (pokemonId: number, note: string) => {
-    const response = await axiosInstance.patch(`/pokemon/${pokemonId}/notes`, { note });
-    return response.data;
-}
-
 export const deletePokemon = async (pokemonId: number) => {
     const response = await axiosInstance.delete(`/pokemon/${pokemonId}`);
     return response.data;

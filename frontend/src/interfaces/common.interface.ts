@@ -12,7 +12,6 @@ export interface IPokemon {
     image: string,
     nickname: string,
     isFavorite: boolean,
-    notes: string[],
     extraDetails: {
       height: number;
       weight: number;

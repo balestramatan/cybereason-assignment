@@ -17,9 +17,6 @@ export class UserPokemon {
   @Column({ nullable: true })
   nickname?: string;
 
-  @Column('text', { array: true, nullable: true })
-  notes?: string[];
-
   @Column({ default: false })
   isFavorite: boolean;
 }
