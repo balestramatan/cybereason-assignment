@@ -105,8 +105,8 @@ Ensure you have the following installed:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/XXX/
-   cd <project_folder>
+   git clone https://github.com/balestramatan/cybereason-assignment.git
+   cd cybereason-assignment
    ```
 
 2. **Install Dependencies On The Drontend And Backend Folders**:
