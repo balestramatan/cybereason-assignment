@@ -1,5 +1,6 @@
 import { IPokemon } from '../../interfaces/common.interface';
 import Loader from '../Loader/Loader';
+import NotFound from '../NoFound/NoFound';
 import PokemonItem from './PokemonItem';
 
 interface IProps {
@@ -14,7 +15,7 @@ const PokemonListComponent = (props: IProps) => {
     <div className="grid-container">
         {
           loading ? <Loader /> :
-          pokemons.length === 0 ? <p>No Pokémon found</p> : 
+          pokemons.length === 0 ? <NotFound message="No Pokémon found"/> : 
           <div className="grid">
             {
               pokemons?.map((pokemon) => (

@@ -12,6 +12,17 @@
     border: 1px solid lightgray;
 }
 
+.form-container button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    width: 100%
+}
+
 .big-image {
     position: absolute;
     top: 0;

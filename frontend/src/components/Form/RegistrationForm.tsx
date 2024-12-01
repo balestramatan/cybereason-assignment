@@ -47,19 +47,19 @@ export default function RegistrationForm() {
 
         <div className="input-container">
           <span>Email</span>
-          <input className="input" {...register('email')} placeholder="Email" autoComplete='email'/>
+          <input className="input" {...register('email')} autoComplete='email'/>
           {errors.email && <p>{errors.email.message}</p>}
         </div>
 
         <div className="input-container">
           <span>Password</span>
-          <input className="input" {...register('password')} placeholder="Password" type="password"  autoComplete='current-password' />
+          <input className="input" {...register('password')} type="password"  autoComplete='current-password' />
           {errors.password && <p>{errors.password.message}</p>}
         </div>
 
         <div className="input-container">
           <span>Repeat Password</span>
-          <input className="input" {...register('repeatPassword')} placeholder="Repeat Password" type="password"  autoComplete='new-password' />
+          <input className="input" {...register('repeatPassword')} type="password"  autoComplete='new-password' />
           {errors.repeatPassword && <p>{errors.repeatPassword.message}</p>}
         </div>
 

@@ -14,7 +14,6 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
 
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [nickname, setNickname] = useState(pokemon.nickname || '');
-  const [note, setNote] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleToggleFavorite = () => onToggleFavorite(pokemon.id);
@@ -32,6 +31,8 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
         {
         isLoading ? <Loader /> : 
         <>
+          <span className="close" onClick={closeModal}>x</span>
+
           {/* Action Toolbar */}
           <div className="action-toolbar">
             <button onClick={handleToggleFavorite}>
@@ -59,20 +60,20 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
             <img src={pokemon.image} alt={pokemon?.name} />
           </div>
           <div className='details-container'>
-            <div className='stats'>
+            <div className='details'>
               <h2>Stats</h2>
               {pokemon.extraDetails.stats?.map((stat) => (
                   <span key={stat.name}><strong>{stat.name}:</strong> {stat.value}</span>
               ))}
             </div>
-            <div className="content">
+            <div className="details">
               <h2>Details</h2>
               <span><strong>Height:</strong> {pokemon.extraDetails.height / 10} m</span>
               <span><strong>Weight:</strong> {pokemon.extraDetails.weight / 10} kg</span>
               <span><strong>Types:</strong> {pokemon.type}</span>
               <span><strong>Base Experience:</strong> {pokemon.extraDetails.baseExperience}</span>
             </div>
-            <div className='abilities'>
+            <div className='details'>
               <h2>Abilities</h2>
               {pokemon.extraDetails.abilities?.map((ability) => (
                   <span key={ability.name}>{ability?.name}</span>

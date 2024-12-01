@@ -40,12 +40,12 @@ export default function LoginForm() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='input-container'>
             <span>Email</span>
-            <input className='input' {...register('email')} placeholder="Email" />
+            <input className='input' {...register('email')} autoComplete="email"/>
             {errors.email && <span className='error-message'>{errors.email.message}</span>}
           </div>
           <div className='input-container'>
             <span>Password</span>
-            <input className='input' {...register('password')} placeholder="Password" type="password" />
+            <input className='input' {...register('password')} type="password" autoComplete="password" />
             {errors.password && <p>{errors.password.message}</p>}
           </div>
           <button type="submit">Login</button>

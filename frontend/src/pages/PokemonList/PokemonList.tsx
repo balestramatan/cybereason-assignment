@@ -87,8 +87,6 @@ const PokemonList: React.FC = () => {
     updateURLParams(searchObject);
   };
 
-  const resetSearch = () => updateURLParams({ offset: DEFAULT_OFFSET, limit: DEFAULT_LIMIT, name: '', type: ''});
-
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedPokemon(null);
@@ -122,7 +120,6 @@ const PokemonList: React.FC = () => {
         searchNameQuery={searchNameQuery} 
         searchTypeQuery={searchTypeQuery} 
         handleSearch={handleSearch}
-        resetSearch={resetSearch}
       />
 
       {!isLoading && (name || type) && (
@@ -137,7 +134,7 @@ const PokemonList: React.FC = () => {
 
       <PokemonListComponent pokemons={pokemons} loading={isLoading} handleCardClick={handleCardClick} />
 
-      <Pagination 
+      {pokemons.length > 0 && <Pagination 
         offset={offset} 
         limit={limit} 
         totalPages={totalPages} 
@@ -146,7 +143,7 @@ const PokemonList: React.FC = () => {
         handleLastPage={handleLastPage}
         handleNextPage={handleNextPage}
         handlePreviousPage={handlePreviousPage}
-      />
+      />}
 
       {isModalOpen && selectedPokemon && (
         <PokemonDetails 

@@ -1,7 +1,7 @@
 .search-container {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 5px;
     padding: 1rem;
 }
 
@@ -14,7 +14,7 @@ input {
 .search-container button {
     padding: 8px 16px;
     border: none;
-    background-color: #007bff;
+    background-color: #e7d087;
     color: white;
     border-radius: 4px;
     cursor: pointer;
@@ -27,6 +27,7 @@ input {
     align-items: center;
     gap: 1rem;
     padding: 1rem;
+    padding-top: 70px;
 }
 
 .grid-container {
@@ -97,9 +98,9 @@ input {
 
 .pagination button {
     padding: 8px 16px;
+    background: transparent;
     border: none;
-    background-color: #007bff;
-    color: white;
+    color: #f6bd03;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
@@ -113,14 +114,10 @@ input {
 }
 
 .pagination button:disabled {
-    background-color: #ccc;
+    color: #d3cdcd;
     cursor: not-allowed;
 }
   
-.pagination button:hover:not(:disabled) {
-    background-color: #0056b3;
-}
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -138,11 +135,20 @@ input {
     display: flex;
     flex-direction: column;
     background: white;
-    padding: 24px;
+    padding: 2rem;
     border-radius: 8px;
     min-width: 50%;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+    align-self: flex-start;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #53544f;
+    transition: color 0.2s ease-in-out;
+    margin-bottom: 20px;
 }
   
 .modal-content button {
@@ -175,31 +181,22 @@ input {
     align-items: center;
 }
 
-.abilities {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
+.details {
+    border: 1px solid #ccc;
+    padding: 25px;
+    border-radius: 10px;
+    min-width: 200px;
 
-.content {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
-
-.stats {
     display: flex;
     flex-direction: column;
     text-align: left;
 }
 
 .active-filter {
-    margin-top: 1rem;
     padding: 0.5rem;
     background-color: #f0f8ff; /* Light blue */
-    border: 1px solid #007bff; /* Blue border */
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: 10px;
     color: #007bff; /* Blue text */
     text-align: center;
 }

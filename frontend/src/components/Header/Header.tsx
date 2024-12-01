@@ -9,10 +9,10 @@ const Header = () => {
     }
     return(
         <header className='header-container'>
+            <img src='/assets/logo.png' alt='logo' />
             <span className={isAuthenticated ? 'is-authenticated' : ''} onClick={isAuthenticated ? logoutHandler : ()=>{}}>
                 {isAuthenticated ? 'Logout' : 'Welcome!'}
             </span>
-            <img src='/assets/logo.png' alt='logo' />
         </header>
     )
 }

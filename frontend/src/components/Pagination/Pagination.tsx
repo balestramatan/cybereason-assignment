@@ -20,32 +20,25 @@ const Pagination = (props: IProps) => {
     handlePreviousPage, 
     handleNextPage, 
     handleLastPage, 
-    handleLimitChange 
 } = props;
 
   return (
     <div className="pagination">
         <button onClick={handleFirstPage} disabled={offset === 0}>
-          First
+          <span>{'<<'}</span>
         </button>
         <button onClick={handlePreviousPage} disabled={offset === 0}>
-          Previous
+          <span>{'<'}</span>
         </button>
         <span>
-          Page {Math.floor((offset / limit) + 1) } of {totalPages}
+          {Math.floor((offset / limit) + 1) } of {totalPages}
         </span>
         <button onClick={handleNextPage} disabled={offset / 10 === totalPages - 1}>
-          Next
+          <span>{'>'}</span>
         </button>
         <button onClick={handleLastPage} disabled={offset / 10 === totalPages - 1}>
-          Last
+          <span>{'>>'}</span>
         </button>
-
-        {/* <select value={limit} onChange={handleLimitChange}>
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-          <option value={30}>30</option>
-        </select> */}
       </div>
   )
 }

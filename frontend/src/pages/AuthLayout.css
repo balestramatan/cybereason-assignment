@@ -1,20 +1,17 @@
-/* Wrapper to split the screen */
 .auth-layout {
     display: flex;
-    height: 100vh; /* Full viewport height */
+    height: 100%;
     width: 100%;
 }
   
-  /* Left side with the image */
 .auth-layout-image {
     flex: 1;
-    background-image: url('../assets/pokemon-background.jpg'); /* Add your image path */
+    background-image: url('../assets/pokemon-background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
   
-/* Right side for the form */
 .auth-layout-content {
     flex: 1;
     display: flex;
