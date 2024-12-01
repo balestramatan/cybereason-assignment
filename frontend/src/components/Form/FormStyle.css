@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.form-container {
+    background-color: rgb(211, 225, 230);
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+}
+
+.big-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background-image: url('../../assets/pokemon-backgrounds.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    z-index: -1;
+  }
+
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+    gap: 3px;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 0.8rem;
+  }
