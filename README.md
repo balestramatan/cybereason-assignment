@@ -109,16 +109,7 @@ Ensure you have the following installed:
    cd cybereason-assignment
    ```
 
-2. **Install Dependencies On The Drontend And Backend Folders**:
-   ```bash
-   cd ~/frontend
-   npm install
-
-   cd ~/backend
-   npm install
-   ```
-
-3. **Start the Application**:
+2. **Start the Application**:
    ```bash
    docker compose up -d
    ```
@@ -132,8 +123,6 @@ Ensure you have the following installed:
 
 4. **Open the Application**:
    Navigate to `http://localhost:5173` in your browser.
-
-
 
 ## License
 
