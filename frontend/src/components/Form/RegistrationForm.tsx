@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 import './FormStyle.css';
+import { toast } from 'react-toastify';
 
 interface RegisterFormInputs {
     email: string;
@@ -36,7 +37,8 @@ export default function RegistrationForm() {
       navigate('/');
 
     } catch (error: any) {
-      alert(error.response?.data?.message || 'Error registering user');
+      console.log(error.response?.data?.message || 'Error registering user');
+      toast.error(error.response?.data?.message || 'Error registering user');
     }
   };
   

@@ -6,7 +6,7 @@ interface IProps {
     searchTypeQuery: React.RefObject<HTMLInputElement>;
 }
 
-const Search = (props: IProps) => {
+const Search = React.memo((props: IProps) => { // React.memo is used to prevent unnecessary re-renders
     const { handleSearch, searchNameQuery, searchTypeQuery } = props;
     return (
         <div className="search-container">
@@ -23,6 +23,6 @@ const Search = (props: IProps) => {
         <button onClick={handleSearch}>🔍</button>
       </div>
     )
-}
+});
 
 export default Search;

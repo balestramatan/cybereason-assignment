@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchPokemonDetails, fetchPokemons, toggleFavorite, updateNickname } from '../../api/pokemon';
 
 import './PokemonList.css';
 import PokemonDetails from '../../components/PokemonList/PokemonDetails';
-import useURLParams from '../../hooks/usePaginationParams';
+import useURLParams from '../../hooks/useURLParams';
 import Pagination from '../../components/Pagination/Pagination';
 import Search from '../../components/Search/Search';
 import PokemonListComponent from '../../components/PokemonList/PokemonListComponent';
 import { IPokemon, IPokemonDetails } from '../../interfaces/common.interface';
 import { toast } from 'react-toastify';
-
-const DEFAULT_OFFSET = 0;
-const DEFAULT_LIMIT = 10;
+import debounce from 'lodash.debounce';
+import usePagination from '../../hooks/usePagination';
+import ActiveSearch from '../../components/ActiveSearch/ActiveSearch';
 
 const PokemonList: React.FC = () => {
   const [pokemons, setPokemons] = useState<IPokemon[]>([]);
@@ -21,6 +21,7 @@ const PokemonList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Modal visibility
 
   const { params: { offset, limit, type, name }, updateURLParams} = useURLParams(10);
+  const { handleFirstPage, handleLastPage, handleNextPage, handlePreviousPage } = usePagination(offset, limit, totalPages, updateURLParams);
 
   const searchNameQuery = useRef<HTMLInputElement>(null);
   const searchTypeQuery = useRef<HTMLInputElement>(null);
@@ -43,23 +44,6 @@ const PokemonList: React.FC = () => {
   useEffect(() => {
     fetchPokemonsData();
   }, [offset, limit, name, type]);
-  
-  const handleFirstPage = () => {
-    updateURLParams({ offset: DEFAULT_OFFSET, limit: DEFAULT_LIMIT });
-  }
-  const handleLastPage = () => {
-    updateURLParams({ offset: (totalPages - 1) * limit, limit });
-  }
-  const handleNextPage = () => {
-    updateURLParams({ offset: offset + limit, limit });
-  }
-  const handlePreviousPage = () => {
-    updateURLParams({ offset: offset - limit, limit });
-  }
-
-  const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    updateURLParams({ offset, limit: Number(event.target.value) });
-  };
 
   const handleCardClick = async (id: number) => {
     setIsModalOpen(true);
@@ -76,19 +60,20 @@ const PokemonList: React.FC = () => {
     }
   };
 
-  const handleSearch = () => {
-    const nameSearchValue = searchNameQuery.current?.value || '';
-    const typeSearchValue = searchTypeQuery.current?.value || '';
-
-    const searchObject = {
-      offset: 0, 
-      limit, 
-      name: nameSearchValue, 
-      type: typeSearchValue
-    }
-    
-    updateURLParams(searchObject);
-  };
+  const handleSearch = useCallback(
+    debounce(() => {
+      const nameSearchValue = searchNameQuery.current?.value || '';
+      const typeSearchValue = searchTypeQuery.current?.value || '';
+  
+      updateURLParams({
+        offset: 0,
+        limit,
+        name: nameSearchValue,
+        type: typeSearchValue,
+      });
+    }, 300),
+    [limit, updateURLParams]
+  );
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -117,13 +102,13 @@ const PokemonList: React.FC = () => {
     }
   };
 
-  const handleToggleFavorite = (id: number, isFavorite: boolean) => {
-    handleUpdatePokemon(id, { isFavorite }, toggleFavorite);
-  };
+  const handleToggleFavorite = useCallback(async (id: number, isFavorite: boolean) => {
+    await handleUpdatePokemon(id, { isFavorite }, toggleFavorite);
+  }, [handleUpdatePokemon]);
   
-  const handleUpdateNickname = (id: number, nickname: string) => {
-    handleUpdatePokemon(id, { nickname }, updateNickname);
-  };
+  const handleUpdateNickname = useCallback(async (id: number, nickname: string) => {
+    await handleUpdatePokemon(id, { nickname }, updateNickname);
+  }, [handleUpdatePokemon]);
 
   return (
     <div className='pokemon-list-container'>
@@ -134,15 +119,7 @@ const PokemonList: React.FC = () => {
         handleSearch={handleSearch}
       />
 
-      {!isLoading && (name || type) && (
-        <div className="active-filter">
-          {name && type
-            ? `Showing results for Pokémon with name "${name}" and type "${type}".`
-            : name
-            ? `Showing results for Pokémon with name "${name}".`
-            : `Showing results for Pokémon with type "${type}".`}
-        </div>
-      )}
+      {!isLoading && (name || type) && <ActiveSearch name={name} type={type} />}
 
       <PokemonListComponent pokemons={pokemons} loading={isLoading} handleCardClick={handleCardClick} />
 
@@ -151,7 +128,6 @@ const PokemonList: React.FC = () => {
         limit={limit} 
         totalPages={totalPages} 
         handleFirstPage={handleFirstPage} 
-        handleLimitChange={handleLimitChange}  
         handleLastPage={handleLastPage}
         handleNextPage={handleNextPage}
         handlePreviousPage={handlePreviousPage}

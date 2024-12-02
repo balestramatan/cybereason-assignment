@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Loader from '../../components/Loader/Loader';
 import { IPokemonDetails } from '../../interfaces/common.interface';
 
@@ -16,18 +16,64 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
   const [nickname, setNickname] = useState(pokemon.nickname || '');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleToggleFavorite = () => {
-    setIsLoading(true)
-    onToggleFavorite(pokemon.id, !pokemon!.isFavorite);
-    setIsLoading(false)
-  }
+  const handleToggleFavorite = useCallback(() => {
+    setIsLoading(true);
+    try {
+      onToggleFavorite(pokemon.id, !pokemon.isFavorite);
+    } catch (error) {
+      console.error('Failed to toggle favorite:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [pokemon.id, pokemon.isFavorite, onToggleFavorite]);
 
-  const handleSaveNickname = () => {
-    setIsLoading(true)
-    onAddNickname(pokemon.id, nickname);
-    setIsEditingNickname(false);
-    setIsLoading(false)
-  };
+  const handleSaveNickname = useCallback(() => {
+    setIsLoading(true);
+    try {
+      onAddNickname(pokemon.id, nickname);
+      setIsEditingNickname(false);
+    } catch (error) {
+      console.error('Failed to update nickname:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [pokemon.id, nickname, onAddNickname]);
+
+  const renderNicknameEditor = useMemo(() => {
+    if (!isEditingNickname) return null;
+
+    return (
+      <div className="nickname-editor">
+        <input
+          type="text"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          placeholder="Enter nickname"
+        />
+        <button onClick={handleSaveNickname} disabled={isLoading}>
+          Save
+        </button>
+      </div>
+    );
+  }, [isEditingNickname, nickname, handleSaveNickname, isLoading]);
+
+  const renderStats = useMemo(
+    () =>
+      pokemon.extraDetails.stats?.map((stat) => (
+        <span key={stat.name}>
+          <strong>{stat.name}:</strong> {stat.value}
+        </span>
+      )),
+    [pokemon.extraDetails.stats]
+  );
+
+  const renderAbilities = useMemo(
+    () =>
+      pokemon.extraDetails.abilities?.map((ability) => (
+        <span key={ability.name}>{ability.name}</span>
+      )),
+    [pokemon.extraDetails.abilities]
+  );
 
   return (
     <div className="modal-overlay" onClick={closeModal}>
@@ -46,17 +92,7 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
           </div>
 
           {/* Nickname Editor */}
-          {isEditingNickname && (
-              <div className="nickname-editor">
-                <input
-                  type="text"
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  placeholder="Enter nickname"
-                />
-                <button onClick={handleSaveNickname}>Save</button>
-              </div>
-          )}
+          {isEditingNickname && renderNicknameEditor}
 
           <div className='pokmon-details'>
             <h1>{pokemon.name} (#{pokemon.id})</h1>
@@ -66,9 +102,7 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
           <div className='details-container'>
             <div className='details'>
               <h2>Stats</h2>
-              {pokemon.extraDetails.stats?.map((stat) => (
-                  <span key={stat.name}><strong>{stat.name}:</strong> {stat.value}</span>
-              ))}
+              {renderStats}
             </div>
             <div className="details">
               <h2>Details</h2>
@@ -79,9 +113,7 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
             </div>
             <div className='details'>
               <h2>Abilities</h2>
-              {pokemon.extraDetails.abilities?.map((ability) => (
-                  <span key={ability.name}>{ability?.name}</span>
-              ))}
+              {renderAbilities}
             </div>            
           </div>
         </>

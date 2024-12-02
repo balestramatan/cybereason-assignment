@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface IProps {
     offset: number;
     limit: number;
@@ -8,7 +6,6 @@ interface IProps {
     handlePreviousPage: () => void;
     handleNextPage: () => void;
     handleLastPage: () => void;
-    handleLimitChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
 const Pagination = (props: IProps) => {
