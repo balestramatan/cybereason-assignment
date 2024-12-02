@@ -72,7 +72,6 @@ A full-stack web application where users can register, log in, and manage Pokém
     - user
     - pokemon
     - nickname
-    - notes
     - isFavorite
 
 ## Application Flow
