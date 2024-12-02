@@ -3,8 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import PokemonList from './pages/PokemonList/PokemonList';
-import PokemonDetails from './pages/PokemonList/PokemonDetails';
 import { useAuth } from './context/AuthContext';
+import Loader from './components/Loader/Loader';
 
 const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -23,7 +23,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     return <Navigate to="/login" />;
   }
 
-  return isAuthenticated ? <>{children}</> : <div>Loading...</div>;
+  return isAuthenticated ? <>{children}</> : <Loader />;
 };
 
 const AppRoutes: React.FC = () => (
