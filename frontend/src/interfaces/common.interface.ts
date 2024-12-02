@@ -3,6 +3,8 @@ export interface IPokemon {
     name: string;
     type: string;
     image: string;
+    isFavorite?: boolean;
+    nickname?: string;
   }
   
   export interface IPokemonDetails extends IPokemon {

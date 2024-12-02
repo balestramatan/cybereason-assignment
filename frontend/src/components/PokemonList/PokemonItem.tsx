@@ -9,9 +9,11 @@ const PokemonItem = (props: IProps) => {
     const { pokemon, handleCardClick } = props;
     return(
         <div key={pokemon.id} className="pokemon-card" onClick={() => handleCardClick(pokemon.id)}>
+            {pokemon.isFavorite && <span className="favorite">💖</span>}
             {pokemon.image ? <img src={pokemon.image} alt={pokemon.name} /> : <span>No Image</span>}
-            <h3>{pokemon.name?.toLocaleUpperCase()}</h3>
-            <p>{pokemon.type}</p>
+            {pokemon.nickname && <span>{`@${pokemon.nickname}`}</span>}
+            <h4>{pokemon.name?.toLocaleUpperCase()}</h4>
+            <span>{pokemon.type}</span>
         </div>
     )
 }

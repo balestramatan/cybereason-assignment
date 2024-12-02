@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { fetchPokemonDetails, fetchPokemons, toggleFavorite, updateNickname } from '../../api/pokemon';
 
 import './PokemonList.css';
-import PokemonDetails from './PokemonDetails';
+import PokemonDetails from '../../components/PokemonList/PokemonDetails';
 import useURLParams from '../../hooks/usePaginationParams';
 import Pagination from '../../components/Pagination/Pagination';
 import Search from '../../components/Search/Search';
 import PokemonListComponent from '../../components/PokemonList/PokemonListComponent';
 import { IPokemon, IPokemonDetails } from '../../interfaces/common.interface';
+import { toast } from 'react-toastify';
 
 const DEFAULT_OFFSET = 0;
 const DEFAULT_LIMIT = 10;
@@ -32,7 +33,8 @@ const PokemonList: React.FC = () => {
       setPokemons(pokemons);
       setTotalPages(Math.ceil(count / limit));
     } catch (err: any) {
-      console.log(err?.data?.message || 'Failed to fetch Pokémon');
+      console.log(err.response?.data?.message || 'Failed to fetch Pokémon');
+      toast.error(err.response?.data?.message || 'Failed to fetch Pokémon');
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +69,8 @@ const PokemonList: React.FC = () => {
       const pokemonDetails = await fetchPokemonDetails(id);
       setSelectedPokemon({...pokemonDetails, image: selectedPokemon?.image});      
     } catch (err: any) {
-      console.log(err.message || 'Failed to fetch Pokémon details');
+      console.log(err.response?.data?.message || 'Failed to fetch Pokémon details');
+      toast.error(err.response?.data?.message || 'Failed to fetch Pokémon details');
     } finally {
       setIsLoading(false);
     }
@@ -92,25 +95,32 @@ const PokemonList: React.FC = () => {
     setSelectedPokemon(null);
   };
 
-  const handleToggleFavorite = (id: number) => {
+  const handleUpdatePokemon = async (id: number, updatedFields: Partial<IPokemon>, apiCall: (id: number, updatedFields: any) => Promise<void>) => {
     try {
-      toggleFavorite(id, !selectedPokemon!.isFavorite);
-
-      const newPokemon = {...selectedPokemon!, isFavorite: !selectedPokemon!.isFavorite};
-      setSelectedPokemon(newPokemon);
+      // Call the appropriate API for the update
+      await apiCall(id, updatedFields);
+  
+      // Update the selected Pokémon
+      const updatedPokemon = { ...selectedPokemon!, ...updatedFields };
+      setSelectedPokemon(updatedPokemon);
+  
+      // Update the pokemons list
+      const updatedPokemons = pokemons.map((pokemon) =>
+        Number(pokemon.id) === Number(id) ? updatedPokemon : pokemon
+      );
+      setPokemons(updatedPokemons);
     } catch (err: any) {
-      console.log(err.message || 'Failed to toggle favorite');
+      console.log(err.message || `Failed to update Pokémon`);
+      toast.error(err.message || `Failed to update Pokémon`);
     }
   };
 
+  const handleToggleFavorite = (id: number, isFavorite: boolean) => {
+    handleUpdatePokemon(id, { isFavorite }, toggleFavorite);
+  };
+  
   const handleUpdateNickname = (id: number, nickname: string) => {
-    try {
-      updateNickname(id, nickname);
-      const newPokemon = {...selectedPokemon!, nickname};
-      setSelectedPokemon(newPokemon);
-    } catch (err: any) {
-      console.log(err.message || 'Failed to update nickname');
-    }
+    handleUpdatePokemon(id, { nickname }, updateNickname);
   };
 
   return (

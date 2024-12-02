@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 import './FormStyle.css';
+import { toast } from 'react-toastify';
 
 interface LoginFormInputs {
     email: string;
@@ -31,6 +32,7 @@ export default function LoginForm() {
       navigate('/'); // Redirect to the home page
     } catch (error: any) {
       console.log(error.response?.data?.message || 'Error logging in');
+      toast.error(error.response?.data?.message || 'Error logging in');
     }
   };
 

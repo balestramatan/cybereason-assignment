@@ -5,7 +5,7 @@ import { IPokemonDetails } from '../../interfaces/common.interface';
 interface IProps {
   pokemon: IPokemonDetails;
   closeModal: () => void;
-  onToggleFavorite: (pokemonId: number) => void;
+  onToggleFavorite: (pokemonId: number, isFavorite: boolean) => void;
   onAddNickname: (pokemonId: number, nickname: string) => void;
 }
 
@@ -16,7 +16,11 @@ const PokemonDetails: React.FC<IProps> = (props: IProps) => {
   const [nickname, setNickname] = useState(pokemon.nickname || '');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleToggleFavorite = () => onToggleFavorite(pokemon.id);
+  const handleToggleFavorite = () => {
+    setIsLoading(true)
+    onToggleFavorite(pokemon.id, !pokemon!.isFavorite);
+    setIsLoading(false)
+  }
 
   const handleSaveNickname = () => {
     setIsLoading(true)
