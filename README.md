@@ -44,7 +44,6 @@ A full-stack web application where users can register, log in, and manage Pokém
     - GET /pokemon/findOne/:id - Get Pokémon details
     - PATCH /pokemon/:pokemonId/favorite - Favorite a Pokémon
     - PATCH /pokemon/:pokemonId/nickname - Give Pokémon a NickName
-    - PATCH /pokemon/:pokemonId/notes - Add Notes To a Pokémon
     - DELETE /pokemon/:id - Delete a Pokémon
 
 ### Caching - Redis
@@ -116,8 +115,8 @@ Ensure you have the following installed:
 
    - Fronend running on port 5173
    - Backend running on port 3001
-   - Fronend running on port 6379
-   - Fronend running on port 5432
+   - Redis running on port 6379
+   - Database running on port 5432
 
    Make sure the ports are not already in use the your system.
 
