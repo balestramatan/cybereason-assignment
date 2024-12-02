@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import debounce from 'lodash.debounce';
 import usePagination from '../../hooks/usePagination';
 import ActiveSearch from '../../components/ActiveSearch/ActiveSearch';
+import axios from 'axios';
 
 const PokemonList: React.FC = () => {
   const [pokemons, setPokemons] = useState<IPokemon[]>([]);
@@ -23,26 +24,47 @@ const PokemonList: React.FC = () => {
   const { params: { offset, limit, type, name }, updateURLParams} = useURLParams(10);
   const { handleFirstPage, handleLastPage, handleNextPage, handlePreviousPage } = usePagination(offset, limit, totalPages, updateURLParams);
 
+  const abortControllerRef = useRef<AbortController | null>(null);
   const searchNameQuery = useRef<HTMLInputElement>(null);
   const searchTypeQuery = useRef<HTMLInputElement>(null);
 
   const fetchPokemonsData = async () => {
     setIsLoading(true);
 
+    // Cancel the previous request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Create a new AbortController
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     try {
-      const { pokemons, count } = await fetchPokemons(offset, limit, name || '', type || '');
+      const { pokemons, count } = await fetchPokemons(offset, limit, name || '', type || '', controller.signal);
       setPokemons(pokemons);
       setTotalPages(Math.ceil(count / limit));
-    } catch (err: any) {
-      console.log(err.response?.data?.message || 'Failed to fetch Pokémon');
-      toast.error(err.response?.data?.message || 'Failed to fetch Pokémon');
-    } finally {
       setIsLoading(false);
-    }
+      abortControllerRef.current = null;
+    } catch (err: any) {
+      console.log('err', err); 
+      
+      if (axios.isCancel(err)) {
+        console.log('Request was canceled');
+      } else {
+        toast.error(err.response?.data?.message || 'Failed to fetch Pokémon list');
+      }
+    } 
   };
 
   useEffect(() => {
     fetchPokemonsData();
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
   }, [offset, limit, name, type]);
 
   const handleCardClick = async (id: number) => {

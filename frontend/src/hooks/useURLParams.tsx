@@ -33,7 +33,7 @@ const useURLParams = (defaultLimit: number = 10): URLParams => {
     };
   }, [location.search]);
 
-  const updateURLParams = (updatedParams: IParamUpdate) => {
+  const updateURLParams = (updatedParams: IParamUpdate): void => {
     const searchParams = new URLSearchParams(location.search);
     
     (Object.keys(updatedParams) as (keyof IParamUpdate)[]).forEach((key) => {

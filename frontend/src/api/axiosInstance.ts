@@ -19,9 +19,7 @@ axiosInstance.interceptors.request.use((config) => {
 
 axiosInstance.interceptors.response.use(
     (response) => response, // Pass through successful responses
-    (error) => {
-      console.log('error', error);
-      toast.error(error?.response?.data?.message?.message || 'An error occurred');
+    (error) => {      
       if (error.response?.status === 401) {
         toast.info('Session expired. Please log in again.');
         localStorage.removeItem('authToken'); // Clear token

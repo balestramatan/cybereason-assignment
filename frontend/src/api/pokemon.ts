@@ -12,7 +12,9 @@ interface fetchPokemonsResponse {
     count: number;
 }
 
-export const fetchPokemons = async (offset: number, limit: number, name: string, type: string): Promise<fetchPokemonsResponse> => {
+export const fetchPokemons = async (offset: number, limit: number, name: string, type: string, signal?: AbortSignal): Promise<fetchPokemonsResponse> => {
+    if (signal) signal.aborted;
+
     const response = await axiosInstance.get(`${API_BASE}/pokemon`, {
         params: {
             offset,
@@ -20,6 +22,7 @@ export const fetchPokemons = async (offset: number, limit: number, name: string,
             name,
             type
         },
+        signal
     });
 
     return response.data;
