@@ -95,13 +95,15 @@ const PokemonList: React.FC = () => {
     setSelectedPokemon(null);
   };
 
-  const handleUpdatePokemon = async (id: number, updatedFields: Partial<IPokemon>, apiCall: (id: number, updatedFields: any) => Promise<void>) => {
+  const handleUpdatePokemon = async (id: number, updatedField: Partial<IPokemon>, apiCall: (id: number, field: any) => Promise<void>) => {
     try {
+      const [field, value] = Object.entries(updatedField)[0];
+
       // Call the appropriate API for the update
-      await apiCall(id, updatedFields);
+      await apiCall(id, value);
   
       // Update the selected Pokémon
-      const updatedPokemon = { ...selectedPokemon!, ...updatedFields };
+      const updatedPokemon = { ...selectedPokemon!, [field]: value };
       setSelectedPokemon(updatedPokemon);
   
       // Update the pokemons list
